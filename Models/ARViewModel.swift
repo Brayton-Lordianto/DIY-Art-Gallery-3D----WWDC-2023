@@ -22,7 +22,7 @@ class AugmentedRealityViewModel: ObservableObject {
             return material
         }
         
-        let tintColor: UIColor = .white.withAlphaComponent(0.999)
+        let tintColor: UIColor = .white.withAlphaComponent(1)
         material.color = .init(tint: tintColor,
                                texture: .init(imageAsTexture))
         material.metallic = .float(1.0)
