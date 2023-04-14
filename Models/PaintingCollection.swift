@@ -2,53 +2,45 @@ import Foundation
 import UIKit
 
 class PaintingCollection {
-    // holds a bunch of objects, each of which having an image, painting frame choice, and (optionally) coordinates
-    private var objectCount: Int // bookeeping
-    private var images: [String]
-    private var frames: [Int]
+    // holds a bunch of objects
+    private var paintingObjects: [PaintingModel]
     private static var paintingFrameChoices = ["rectangular-frame", "circular-frame"]
     
     // allows for text recognition of the images
     private var textRecognizer: VisionModel
-    private var recognizedTitles: [String]
     
     init() {
-        self.objectCount = 0
-        self.images = []
-        self.frames = []
-        self.recognizedTitles = []
+        self.paintingObjects = []
         self.textRecognizer = VisionModel()
     }
     
     // getters
     var count: Int {
-        objectCount
+        self.paintingObjects.count
     }
     
     func imageName(at index: Int) -> String {
-        images[index]
+        paintingObjects[index].imageName
     }
     
     func paintingFrameName(at index: Int) -> String {
-        Self.paintingFrameChoices[frames[index]]
+        Self.paintingFrameChoices[paintingObjects[index].frameOption]
     }
     
     func title(at index: Int) -> String {
-        recognizedTitles[index]
+        paintingObjects[index].title
     }
     
     // setters and modifiers
     func addNewPainting(imageName: String, frameIndex: Int) {
-        self.objectCount += 1
-        self.images.append(imageName)
-        self.frames.append(frameIndex)
-        self.textRecognizer.setNewImage(imageName: images.last!)
-        let recognizedTitle = textRecognizer.readImageText()
-        // do some error checking here
-        self.recognizedTitles.append(recognizedTitle)
+        let defaultTitle = "Artwork \(count)"
+        self.textRecognizer.setNewImage(imageName: imageName)
+        let recognizedTitle = textRecognizer.readImageText() 
+        self.paintingObjects.append(.init(imageName: imageName, frameOption: frameIndex, title: recognizedTitle ?? defaultTitle))
     }
     
     func changePaintingFrame(at index: Int, to frameIndex: Int) {
-        frames[index] = frameIndex
+        paintingObjects[index].frameOption = frameIndex
     }    
 }
+

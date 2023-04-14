@@ -4,9 +4,9 @@ import Vision
 // the purpose of any instance of this class is to take an image and output text 
 class VisionModel {
     private var image: UIImage?
-    private var text: String
+    private var text: String?
     init(imagePathname: String = "") {
-        self.text = ""
+        self.text = nil
         self.image = loadImage(imageName: imagePathname)
     }
     
@@ -16,29 +16,29 @@ class VisionModel {
     }
     
     // the request we want to ask Vision; what to do with text that we can recognize 
-    private func handleTextRecognition(errorMessage: String) -> VNRecognizeTextRequest {
+    private func handleTextRecognition() -> VNRecognizeTextRequest {
         VNRecognizeTextRequest { (request, _) in
-            self.text = ""
-            guard let observations = request.results as? [VNRecognizedTextObservation] else { self.text = errorMessage; return }
+            guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
             
+            // start adding to the text
+            self.text = ""
             for currentObservation in observations {
                 let token = currentObservation.topCandidates(1)
                 if let recognizedText = token.first {
-                    self.text += " " + recognizedText.string
+                    self.text?.append(" " + recognizedText.string)
                 }
             }
         }
     }
     
     // takes the text from the image 
-    public func readImageText() -> String {
-        let errorMessage = "ERROR: Could Not Read Text\n"
+    public func readImageText() -> String? {
         guard let image,
               let ciImage = CIImage(image: image)
-        else { return errorMessage }
+        else { return nil }
 
         // get the request we want to handle
-        let request = handleTextRecognition(errorMessage: errorMessage)        
+        let request = handleTextRecognition()        
         
         // this will make our text recognition more accurate.
         request.recognitionLevel = .accurate
@@ -48,14 +48,14 @@ class VisionModel {
         do {
             try requestHandler.perform([request])
         } catch {
-            text = errorMessage
+            text = nil
         }
         
         return text
     }
     
     // utility - get the text or change the image
-    public func getText() -> String {
+    public func recognizedText() -> String? {
         text
     }
     
