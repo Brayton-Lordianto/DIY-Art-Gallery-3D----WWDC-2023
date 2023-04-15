@@ -8,8 +8,8 @@
 import SwiftUI
 import PencilKit
 
-struct CanvasComponent: View {
-    @StateObject var drawingViewModel = DrawingViewModel()
+struct CanvasView: View {
+    @StateObject var drawingViewModel: DrawingViewModel
     var body: some View {
         CanvasRepresentable(drawingViewModel: drawingViewModel)
     }
@@ -18,11 +18,23 @@ struct CanvasComponent: View {
 // canvas representable 
 struct CanvasRepresentable: UIViewRepresentable {
     @ObservedObject var drawingViewModel: DrawingViewModel
+
     func makeUIView(context: Context) -> PKCanvasView {
+        drawingViewModel.initializeCanvas()
+        // Set the drawingPolicy to .anyInput
+        drawingViewModel.drawingModel.canvas.drawingPolicy = .anyInput
+
         return drawingViewModel.drawingModel.canvas
     }
     
     func updateUIView(_ uiView: PKCanvasView, context: Context) {
-        drawingViewModel.updateCanvasTool()
+    }
+}
+
+
+struct CanvasView_Previews: PreviewProvider {
+    @StateObject var drawingViewModel = DrawingViewModel()
+    static var previews: some View {
+        CanvasRepresentable(drawingViewModel: DrawingViewModel())
     }
 }

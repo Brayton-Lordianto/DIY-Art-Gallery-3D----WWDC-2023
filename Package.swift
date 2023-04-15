@@ -16,6 +16,8 @@ let package = Package(
         .iOSApplication(
             name: "WWDC 2023 My Project",
             targets: ["AppModule"],
+            bundleIdentifier: "BL.wwdc2023",
+            teamIdentifier: "X622SX6D57",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .cloud),
