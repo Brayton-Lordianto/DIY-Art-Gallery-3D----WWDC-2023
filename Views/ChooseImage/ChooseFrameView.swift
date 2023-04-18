@@ -70,8 +70,8 @@ struct ChooseFrameView: View {
         .buttonStyle(ChooseFrameButton())
     }
     private func saveButton() -> some View {
-        Button("Use This Frame") {
-
+        Button("Add Image With This Frame") {
+            paintingCollection.addNewPainting(image: image, frameIndex: frameIdx)
         }
         .buttonStyle(.bordered)
         .tint(.blue)

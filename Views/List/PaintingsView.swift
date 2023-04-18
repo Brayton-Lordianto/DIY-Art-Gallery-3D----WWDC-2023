@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct PaintingsView: View {
-    @StateObject private var paintingCollection = PaintingCollection()
+    @ObservedObject private var paintingCollection = PaintingCollection()
     @StateObject private var drawingViewModel = DrawingViewModel()
     var body: some View {
         NavigationView {
             List {
                 if paintingCollection.count != 0 {
                     ForEach(paintingCollection.paintingObjects) { painting in
-                        Text("\(painting.imageName)")
+                        paintingDisplay(painting: painting)
                     }
                 } else {
                     placeholder()
@@ -37,6 +37,12 @@ struct PaintingsView: View {
         }
     }
     
+    private func paintingDisplay(painting: PaintingModel) -> some View {
+        NavigationLink("\(painting.title)") {
+            SinglePaintingView(painting: painting)
+        }
+    }
+    
     private func placeholder() -> some View {
         NavigationLink("NO PAINTINGS YET 🥹") {
             ZStack {
@@ -55,7 +61,7 @@ struct PaintingsView: View {
         } label: {
             HStack {
                 Image(systemName: "plus")
-                Text("Draw Painitng")
+                Text("Draw Painting")
             }
         }
     }

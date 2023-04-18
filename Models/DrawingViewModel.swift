@@ -20,13 +20,20 @@ class DrawingViewModel: ObservableObject {
 
     // initialize the canvas
     func initializeCanvas() {
+        // basic settings
         drawingModel.canvas.drawingPolicy = .anyInput
-         drawingModel.canvas.backgroundColor = .clear
+        drawingModel.canvas.backgroundColor = .clear
+        
+        // make a black border background around the canvas
+        drawingModel.canvas.layer.borderColor = UIColor.blue.cgColor
+        drawingModel.canvas.layer.borderWidth = 5
+        
         
         // set up a built in tool picker 
-         drawingModel.toolPicker.setVisible(true, forFirstResponder: drawingModel.canvas)
-         drawingModel.toolPicker.addObserver(drawingModel.canvas)
-         drawingModel.canvas.becomeFirstResponder()
+        drawingModel.toolPicker.setVisible(true, forFirstResponder: drawingModel.canvas)
+        drawingModel.toolPicker.addObserver(drawingModel.canvas)
+        drawingModel.canvas.becomeFirstResponder()
+        drawingModel.toolPicker.setVisible(true, forFirstResponder: drawingModel.canvas)
     }
     
     //  return the drawing as a UIImage
@@ -35,11 +42,4 @@ class DrawingViewModel: ObservableObject {
         let image = drawing.image(from: drawing.bounds, scale: 1)
         return image
     }
-    
-//    func toolPickerSelectedToolDidChange(_ toolPicker: PKToolPicker) {
-//        if let inkingTool = toolPicker.selectedTool as? PKInkingTool {
-//            let color = inkingTool.color
-//            drawingModel.canvas.tool = PKInkingTool(.pen, color: color, width: 10)
-//        }
-//    }
 }

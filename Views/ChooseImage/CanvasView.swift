@@ -12,16 +12,23 @@ struct CanvasView: View {
     @StateObject var drawingViewModel: DrawingViewModel
     @EnvironmentObject var paintingCollection: PaintingCollection
     var body: some View {
-        NavigationStack {
-            CanvasRepresentable(drawingViewModel: drawingViewModel)
-            
-            NavigationLink {
+            VStack {
+                NavigationLink {
+                    ChooseFrameView(image: drawingViewModel.drawingAsImage())
+                        .environmentObject(paintingCollection)
+                } label: {
+                    Text("Ready to add to My Collection")
+                }
+                .buttonStyle(.bordered)
                 
-            } label: {
-                Text("Ready to add to My Collection")
+                
+                CanvasRepresentable(drawingViewModel: drawingViewModel)
+                    .offset(y: 10)
+                    .ignoresSafeArea(edges: .bottom)
+                    .onAppear {
+                        drawingViewModel.initializeCanvas()
+                    }
             }
-
-        }
     }
 }
 
@@ -30,7 +37,6 @@ struct CanvasRepresentable: UIViewRepresentable {
     @ObservedObject var drawingViewModel: DrawingViewModel
 
     func makeUIView(context: Context) -> PKCanvasView {
-        drawingViewModel.initializeCanvas()
         drawingViewModel.drawingModel.canvas.drawingPolicy = .anyInput
         return drawingViewModel.drawingModel.canvas
     }
