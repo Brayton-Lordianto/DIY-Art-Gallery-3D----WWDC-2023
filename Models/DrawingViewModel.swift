@@ -29,10 +29,17 @@ class DrawingViewModel: ObservableObject {
          drawingModel.canvas.becomeFirstResponder()
     }
     
-    func toolPickerSelectedToolDidChange(_ toolPicker: PKToolPicker) {
-        if let inkingTool = toolPicker.selectedTool as? PKInkingTool {
-            let color = inkingTool.color
-            drawingModel.canvas.
-        }
+    //  return the drawing as a UIImage
+    func drawingAsImage() -> UIImage {
+        let drawing = drawingModel.canvas.drawing
+        let image = drawing.image(from: drawing.bounds, scale: 1)
+        return image
     }
+    
+//    func toolPickerSelectedToolDidChange(_ toolPicker: PKToolPicker) {
+//        if let inkingTool = toolPicker.selectedTool as? PKInkingTool {
+//            let color = inkingTool.color
+//            drawingModel.canvas.tool = PKInkingTool(.pen, color: color, width: 10)
+//        }
+//    }
 }

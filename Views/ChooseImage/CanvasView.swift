@@ -10,8 +10,18 @@ import PencilKit
 
 struct CanvasView: View {
     @StateObject var drawingViewModel: DrawingViewModel
+    @EnvironmentObject var paintingCollection: PaintingCollection
     var body: some View {
-        CanvasRepresentable(drawingViewModel: drawingViewModel)
+        NavigationStack {
+            CanvasRepresentable(drawingViewModel: drawingViewModel)
+            
+            NavigationLink {
+                
+            } label: {
+                Text("Ready to add to My Collection")
+            }
+
+        }
     }
 }
 
@@ -21,9 +31,7 @@ struct CanvasRepresentable: UIViewRepresentable {
 
     func makeUIView(context: Context) -> PKCanvasView {
         drawingViewModel.initializeCanvas()
-        // Set the drawingPolicy to .anyInput
         drawingViewModel.drawingModel.canvas.drawingPolicy = .anyInput
-
         return drawingViewModel.drawingModel.canvas
     }
     
@@ -36,5 +44,6 @@ struct CanvasView_Previews: PreviewProvider {
     @StateObject var drawingViewModel = DrawingViewModel()
     static var previews: some View {
         CanvasRepresentable(drawingViewModel: DrawingViewModel())
+            .environmentObject(PaintingCollection())
     }
 }

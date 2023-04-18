@@ -32,7 +32,7 @@ class VisionModel {
     }
     
     // takes the text from the image 
-    public func readImageText() -> String? {
+    func readImageText() -> String? {
         guard let image,
               let ciImage = CIImage(image: image)
         else { return nil }
@@ -55,11 +55,15 @@ class VisionModel {
     }
     
     // utility - get the text or change the image
-    public func recognizedText() -> String? {
+    func recognizedText() -> String? {
         text
     }
     
-    public func setNewImage(imageName: String) {
+    func setNewImage(imageName: String) {
         self.image = loadImage(imageName: imageName)
+    }
+    
+    func setNewImage(image: UIImage) {
+        self.image = image
     }
 }

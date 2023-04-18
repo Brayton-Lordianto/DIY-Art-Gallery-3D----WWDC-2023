@@ -1,17 +1,20 @@
 import Foundation
 import UIKit
 
-class PaintingCollection {
+class PaintingCollection: ObservableObject {
     // holds a bunch of objects
-    private var paintingObjects: [PaintingModel]
+    @Published var paintingObjects: [PaintingModel]
     private static var paintingFrameChoices = ["rectangular-frame", "circular-frame"]
     
     // allows for text recognition of the images
     private var textRecognizer: VisionModel
     
+    private var imageFileLoader: ImageFileLoader
+    
     init() {
         self.paintingObjects = []
         self.textRecognizer = VisionModel()
+        self.imageFileLoader = ImageFileLoader()
     }
     
     // getters
@@ -37,6 +40,16 @@ class PaintingCollection {
         self.textRecognizer.setNewImage(imageName: imageName)
         let recognizedTitle = textRecognizer.readImageText() 
         self.paintingObjects.append(.init(imageName: imageName, frameOption: frameIndex, title: recognizedTitle ?? defaultTitle))
+    }
+    
+    
+    func addNewPainting(image: UIImage, frameIndex: Int) {
+        let defaultTitle = "Artwork \(count)"
+        self.textRecognizer.setNewImage(image: image)
+        let recognizedTitle = textRecognizer.readImageText()
+        let title = recognizedTitle ?? defaultTitle
+        self.paintingObjects.append(.init(imageName: "", frameOption: frameIndex, title: title))
+        imageFileLoader.saveImage(image: image, imageName: title)
     }
     
     func changePaintingFrame(at index: Int, to frameIndex: Int) {

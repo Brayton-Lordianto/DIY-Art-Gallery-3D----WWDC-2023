@@ -4,11 +4,18 @@ import RealityKit
 // handles all the state changes in the AR views
 class AugmentedRealityViewModel: ObservableObject {
     @Published var arView: ARView
-    var paintingCollection: PaintingCollection
+    @Binding var paintingCollection: PaintingCollection
     
-    init() {
+    init(paintingCollection: Binding<PaintingCollection>) {
         arView = ARView()
-        paintingCollection = PaintingCollection()
+        self._paintingCollection = paintingCollection
+    }
+    
+    func initializeARView() {
+        // set the ar view up
+        
+        // load all models
+        loadAllModels()
     }
 
     // returns a material with the image loaded into it
@@ -32,7 +39,7 @@ class AugmentedRealityViewModel: ObservableObject {
     }
     
     // load all models
-    public func loadAllModels() {
+    func loadAllModels() {
         let anchor = AnchorEntity()
 
         // render each model in the painting collection
