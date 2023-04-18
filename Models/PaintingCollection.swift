@@ -26,15 +26,23 @@ class PaintingCollection: ObservableObject {
         paintingObjects[index].imageName
     }
     
+    // ======================
+    
+    // made static for accessibility from AR views when needed just the name 
+    static func paintingFrameName(number: Int) -> String {
+        Self.paintingFrameChoices[number]
+    }
+    
+    
     func paintingFrameName(at index: Int) -> String {
-        Self.paintingFrameChoices[paintingObjects[index].frameOption]
+        Self.paintingFrameName(number: paintingObjects[index].frameOption)
     }
     
     func title(at index: Int) -> String {
         paintingObjects[index].title
     }
     
-    // setters and modifiers
+    // MARK: setters and modifiers
     func addNewPainting(imageName: String, frameIndex: Int) {
         let defaultTitle = "Artwork \(count)"
         self.textRecognizer.setNewImage(imageName: imageName)

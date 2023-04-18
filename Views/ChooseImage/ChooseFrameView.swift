@@ -8,44 +8,18 @@
 import SwiftUI
 import RealityKit
 
-struct chooseFrameARView: UIViewRepresentable {
-    // have an observed object
-    @ObservedObject var displayARViewModel: DisplayARViewModel
+struct ChooseFrameARViewRepresentable: UIViewRepresentable {
+    var arView = ARView()
+    @Binding var frameIdx: Int
     func makeUIView(context: Context) -> ARView {
-        let ar = ARView()
-        return ar
-//        displayARViewModel.initializeARView()
-//        return displayARViewModel.arView
+        initializeARView()
+        return arView
     }
     
     func updateUIView(_ uiView: ARView, context: Context) {
-        // do nothing
-    }
-}
-
-struct simplisticARViewRepresentable: UIViewRepresentable {
-    func makeUIView(context: Context) -> ARView {
-        let ar = ARView()
-        ar.cameraMode = .nonAR
-        ar.environment.background = .color(.gray)
-        // load the actual model
-        var modelEntity: ModelEntity
-        do {
-            modelEntity = try ModelEntity.loadModel(named: "circular-frame.usdz")
-            modelEntity.generateCollisionShapes(recursive: true)
-            ar.installGestures([.scale, .rotation], for: modelEntity)
-        } catch { return ar }
-        
-        // add the model to an anchor and into the ar view
-        let anchor = AnchorEntity()
-        anchor.addChild(modelEntity)
-        ar.scene.addAnchor(anchor)
-
-        return ar
-    }
-    
-    func updateUIView(_ uiView: ARView, context: Context) {
-        // do nothing
+        // when frame index changes, you want to set the ar view with the correct model
+        let paintingFrameName = PaintingCollection.paintingFrameName(number: frameIdx)
+        render(paintingModelName: paintingFrameName + ".usdz")
     }
 }
 
@@ -55,14 +29,12 @@ struct ChooseFrameView: View {
     let image: UIImage
     @State private var frameIdx = 0
     @EnvironmentObject private var paintingCollection: PaintingCollection
-//    @StateObject private var displayARViewModel = DisplayARViewModel()
     
     var body: some View {
         
         ZStack {
             // ar view
-//            chooseFrameARView(displayARViewModel: displayARViewModel)
-            simplisticARViewRepresentable()
+            ChooseFrameARViewRepresentable(frameIdx: $frameIdx)
                 .ignoresSafeArea()
             
             // buttons on the side and bottom
@@ -76,10 +48,6 @@ struct ChooseFrameView: View {
                 Spacer()
                 saveButton()
             }
-            
-        }
-        .onAppear {
-            
         }
     }
     
@@ -126,6 +94,7 @@ struct ChooseFrameButton: ButtonStyle {
             .frame(width: 50, height: 50)
             .padding(30)
             .foregroundColor(.teal)
+            .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
     }
 }
 

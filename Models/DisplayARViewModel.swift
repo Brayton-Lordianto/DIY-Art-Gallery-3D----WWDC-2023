@@ -7,19 +7,26 @@
 
 import Foundation
 import RealityKit
+import SwiftUI
 
-class DisplayARViewModel: ObservableObject {
-    @Published var arView = ARView()
+class DisplayARViewModel {
+//    var arView: Binding<ARView>?
+//    
+//    init(arView: Binding<ARView>? = nil) {
+//        self.arView = arView
+//    }
     
-    func initializeARView() {
+    static var arView = ARView()
+    
+    static func initializeARView() {
         print("hi")
 //        arView.cameraMode = .nonAR
         arView.backgroundColor = .gray
     }
-    
+//    
     func render(paintingModelName: String) {
         // remove everything from the arView
-        arView.scene.anchors.removeAll()
+        Self.arView.scene.anchors.removeAll()
         
         // load the new frame model into the ARview
         loadModel(modelName: paintingModelName)
@@ -35,7 +42,7 @@ class DisplayARViewModel: ObservableObject {
         // add the model to an anchor and into the ar view
         let anchor = AnchorEntity()
         anchor.addChild(modelEntity)
-        arView.scene.addAnchor(anchor)
+        Self.arView.scene.addAnchor(anchor)
     }
 }
 
