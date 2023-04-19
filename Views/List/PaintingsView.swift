@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PaintingsView: View {
     @ObservedObject private var paintingCollection = PaintingCollection()
+    @State private var galleryView: GalleryARViewRepresentable? = nil
     var body: some View {
         NavigationView {
             List {
@@ -33,6 +34,9 @@ struct PaintingsView: View {
             }
             .listStyle(.sidebar)
             .navigationTitle("Paintings")
+        }
+        .onAppear {
+            galleryView = GalleryARViewRepresentable(paintingCollection: paintingCollection)
         }
     }
     
@@ -67,7 +71,10 @@ struct PaintingsView: View {
     
     private func galleryNavLink() -> some View {
         NavigationLink {
-            
+            galleryView
+                .onAppear {
+                    galleryView?.appeared()
+                }
         } label: {
             Text("3D GALLERY")
         }

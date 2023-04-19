@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RealityKit
 
 class ImageFileLoader {
     private func fileName(imageName: String) -> String {
@@ -30,5 +31,14 @@ class ImageFileLoader {
         let imagePath = appFilePath.appendingPathComponent(fileName(imageName: imageName))
         let image = UIImage(contentsOfFile: imagePath.path)
         return image
+    }
+    
+    func loadImageAsTexture(imageName: String) -> TextureResource? {
+        do {
+            let imageAsTexture: TextureResource = try .load(named: imageName)
+            return imageAsTexture
+        } catch {
+            return nil
+        }
     }
 }

@@ -5,6 +5,7 @@ import RealityKit
 class AugmentedRealityViewModel: ObservableObject {
     @Published var arView: ARView
     @Binding var paintingCollection: PaintingCollection
+    let imageFileLoader = ImageFileLoader()
     
     init(paintingCollection: Binding<PaintingCollection>) {
         arView = ARView()
@@ -21,14 +22,18 @@ class AugmentedRealityViewModel: ObservableObject {
     // returns a material with the image loaded into it
     private func getMaterial(imagePathname: String) -> SimpleMaterial {
         var material = SimpleMaterial()
-        var imageAsTexture: TextureResource
-        do {
-            imageAsTexture = try .load(named: imagePathname, in: .main)
-        } catch {
+        guard let imageAsTexture = imageFileLoader.loadImageAsTexture(imageName: imagePathname) else {
             print("Error attaching the image to the material")
             return material
         }
-        
+//        var imageAsTexture: TextureResource
+//        do {
+//            imageAsTexture = try .load(named: imagePathname, in: .main)
+//        } catch {
+//            print("Error attaching the image to the material")
+//            return material
+//        }
+//        
         let tintColor: UIColor = .white.withAlphaComponent(1)
         material.color = .init(tint: tintColor,
                                texture: .init(imageAsTexture))

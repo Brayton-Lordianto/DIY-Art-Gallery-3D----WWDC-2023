@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-
+ 
 class PaintingCollection: ObservableObject {
     // holds a bunch of objects
     @Published var paintingObjects: [PaintingModel]
