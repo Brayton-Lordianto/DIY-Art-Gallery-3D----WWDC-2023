@@ -35,7 +35,6 @@ struct ChooseFrameView: View {
     var body: some View {
         
         ZStack {
-            
             // ar view
             ChooseFrameARViewRepresentable(frameIdx: $frameIdx)
                 .ignoresSafeArea()
