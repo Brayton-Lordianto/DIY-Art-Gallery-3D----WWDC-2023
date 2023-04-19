@@ -9,10 +9,8 @@ import Foundation
 import UIKit
 
 class ImageFileLoader {
-    private var fileExtension = ".jpg"
-    
     private func fileName(imageName: String) -> String {
-        return imageName + fileExtension
+        imageName // you can optionally change the name here
     }
     
     func saveImage(image: UIImage, imageName: String) {

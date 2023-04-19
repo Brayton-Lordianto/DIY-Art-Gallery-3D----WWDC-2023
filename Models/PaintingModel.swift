@@ -4,7 +4,10 @@ import SwiftUI
 struct PaintingModel: Identifiable, Hashable {
     let id = UUID()
     let dateCreated = Date()
-    var imageName: String
     var frameOption: Int
     var title: String
+    var imageName: String {
+        id.uuidString + Self.imgExtension
+    }
+    static let imgExtension = ".jpg"
 }

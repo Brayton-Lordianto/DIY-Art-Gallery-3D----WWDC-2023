@@ -29,6 +29,8 @@ struct ChooseFrameView: View {
     let image: UIImage
     @State private var frameIdx = 0
     @EnvironmentObject private var paintingCollection: PaintingCollection
+    @State private var showingAlert = false
+    @State private var paintingTitle = ""
     
     var body: some View {
         
@@ -48,6 +50,19 @@ struct ChooseFrameView: View {
                 Spacer()
                 saveButton()
             }
+            .alert("Name Your Beautiful Artwork", isPresented: $showingAlert, actions: {
+                TextField("Name is being scanned...", text: $paintingTitle)
+                alertSaveButton()
+            }, message: {
+                Text("If your artwork contains text, it will show up here.")
+            })
+        }
+    }
+    
+    private func alertSaveButton() -> some View {
+        Button("Save", role: .cancel) {
+            guard paintingCollection.count != 0 else { return }
+            paintingCollection.changePaintingName(at: paintingCollection.count - 1, to: paintingTitle)
         }
     }
     
@@ -84,7 +99,8 @@ struct ChooseFrameView: View {
     private func toggleIdxBackward() { frameIdx = 1 - frameIdx }
     
     private func saveImage() {
-        paintingCollection.addNewPainting(image: image, frameIndex: frameIdx)
+        showingAlert.toggle()
+        paintingTitle = paintingCollection.addNewPainting(image: image, frameIndex: frameIdx)
     }
 }
 

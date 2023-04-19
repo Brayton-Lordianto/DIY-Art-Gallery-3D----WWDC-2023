@@ -33,6 +33,6 @@ struct SinglePaintingView: View {
 
 struct SinglePaintingView_Previews: PreviewProvider {
     static var previews: some View {
-        SinglePaintingView(painting: PaintingModel(imageName: "", frameOption: 1, title: "Artwork 1"))
+        SinglePaintingView(painting: PaintingModel(frameOption: 1, title: "Artwork 1"))
     }
 }

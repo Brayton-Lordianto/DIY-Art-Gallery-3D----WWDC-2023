@@ -43,29 +43,26 @@ class PaintingCollection: ObservableObject {
     }
     
     // MARK: setters and modifiers
-    func addNewPainting(imageName: String, frameIndex: Int) {
-        let defaultTitle = "Artwork \(count)"
-        self.textRecognizer.setNewImage(imageName: imageName)
-        let recognizedTitle = textRecognizer.readImageText() 
-        self.paintingObjects.append(.init(imageName: imageName, frameOption: frameIndex, title: recognizedTitle ?? defaultTitle))
-    }
-    
-    
-    func addNewPainting(image: UIImage, frameIndex: Int) {
-        print("painting about to be added")
-        let defaultTitle = "Artwork \(count)"
+    // adds a new painting and returns the title of the painting
+    func addNewPainting(image: UIImage, frameIndex: Int) -> String {
+        let defaultTitle = "Artwork \(count + 1)"
         self.textRecognizer.setNewImage(image: image)
         let recognizedTitle = textRecognizer.readImageText()
         let title = recognizedTitle ?? defaultTitle
-        let painting = PaintingModel(imageName: "\(title)\(count)", frameOption: frameIndex, title: title)
+        let painting = PaintingModel(frameOption: frameIndex, title: title)
         paintingObjects = paintingObjects + [painting]
-        imageFileLoader.saveImage(image: image, imageName: title)
-        print("painting is added")
-        print("\(paintingObjects)")
+        imageFileLoader.saveImage(image: image, imageName: painting.imageName)
+        
+        return title
     }
     
     func changePaintingFrame(at index: Int, to frameIndex: Int) {
         paintingObjects[index].frameOption = frameIndex
-    }    
+    }
+    
+    func changePaintingName(at index: Int, to name: String) {
+        paintingObjects[index].title = name
+    }
+    
 }
 
