@@ -19,16 +19,13 @@ struct CanvasView: View {
                         .environmentObject(paintingCollection)
                         .onAppear {
                             // we are using this rather than passing in the image because it has not yet been set.
+                            print("hi there")
                             uiimage = drawingViewModel.drawingAsImage()
                         }
                 } label: {
                     Text("Ready to add to My Collection")
                 }
-                .buttonStyle(.bordered)
-                .onTapGesture {
-                    uiimage = drawingViewModel.drawingAsImage()
-                }
-                
+                .buttonStyle(.bordered)                
                 
                 CanvasRepresentable(uiimage: $uiimage)
                     .environmentObject(drawingViewModel)

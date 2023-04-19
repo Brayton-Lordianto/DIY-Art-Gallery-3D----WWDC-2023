@@ -3,16 +3,21 @@ import Vision
 
 // the purpose of any instance of this class is to take an image and output text 
 class VisionModel {
-    private var image: UIImage?
+    private var image: UIImage? {
+        didSet { print("image in vision model changed ") }
+    }
     private var text: String?
+    private var imageFileLoader: ImageFileLoader
+    
     init(imagePathname: String = "") {
         self.text = nil
-        self.image = loadImage(imageName: imagePathname)
+        self.image = nil
+        self.imageFileLoader = ImageFileLoader()
     }
     
     // load the image 
     private func loadImage(imageName: String) -> UIImage? {
-        UIImage(named: imageName, in: .main, with: .none)
+        imageFileLoader.loadImage(imageName: imageName)
     }
     
     // the request we want to ask Vision; what to do with text that we can recognize 
@@ -20,6 +25,7 @@ class VisionModel {
         VNRecognizeTextRequest { (request, _) in
             guard let observations = request.results as? [VNRecognizedTextObservation] else { return }
             
+            print("getting \(observations.count) observations for text")
             // start adding to the text
             self.text = ""
             for currentObservation in observations {

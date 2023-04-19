@@ -26,14 +26,7 @@ class AugmentedRealityViewModel: ObservableObject {
             print("Error attaching the image to the material")
             return material
         }
-//        var imageAsTexture: TextureResource
-//        do {
-//            imageAsTexture = try .load(named: imagePathname, in: .main)
-//        } catch {
-//            print("Error attaching the image to the material")
-//            return material
-//        }
-//        
+        
         let tintColor: UIColor = .white.withAlphaComponent(1)
         material.color = .init(tint: tintColor,
                                texture: .init(imageAsTexture))

@@ -46,14 +46,15 @@ class PaintingCollection: ObservableObject {
     // adds a new painting and returns the title of the painting
     func addNewPainting(image: UIImage, frameIndex: Int) -> String {
         let defaultTitle = "Artwork \(count + 1)"
-        self.textRecognizer.setNewImage(image: image)
-        let recognizedTitle = textRecognizer.readImageText()
-        let title = recognizedTitle ?? defaultTitle
-        let painting = PaintingModel(frameOption: frameIndex, title: title)
+        let painting = PaintingModel(frameOption: frameIndex, title: defaultTitle)
         paintingObjects = paintingObjects + [painting]
-        imageFileLoader.saveImage(image: image, imageName: painting.imageName)
         
-        return title == "" ? defaultTitle : title
+        imageFileLoader.saveImage(image: image, imageName: painting.imageName)
+        self.textRecognizer.setNewImage(imageName: painting.imageName)
+        let recognizedTitle = textRecognizer.readImageText() ?? defaultTitle
+        let title = recognizedTitle == "" ? defaultTitle : recognizedTitle
+        
+        return title
     }
     
     func changePaintingFrame(at index: Int, to frameIndex: Int) {
