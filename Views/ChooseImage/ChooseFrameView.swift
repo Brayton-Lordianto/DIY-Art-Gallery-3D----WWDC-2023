@@ -26,7 +26,7 @@ struct ChooseFrameARViewRepresentable: UIViewRepresentable {
 
 
 struct ChooseFrameView: View {
-    let image: UIImage
+    @Binding var image: UIImage
     @State private var frameIdx = 0
     @EnvironmentObject private var paintingCollection: PaintingCollection
     @State private var showingAlert = false
@@ -35,6 +35,7 @@ struct ChooseFrameView: View {
     var body: some View {
         
         ZStack {
+            
             // ar view
             ChooseFrameARViewRepresentable(frameIdx: $frameIdx)
                 .ignoresSafeArea()
@@ -54,7 +55,9 @@ struct ChooseFrameView: View {
                 TextField("Name is being scanned...", text: $paintingTitle)
                 alertSaveButton()
             }, message: {
-                Text("If your artwork contains text, it will show up here.")
+                VStack {
+                    Text("If your artwork contains text, it will show up here.")
+                }
             })
         }
     }
@@ -86,7 +89,8 @@ struct ChooseFrameView: View {
     }
     private func saveButton() -> some View {
         Button("Add Image With This Frame") {
-            paintingCollection.addNewPainting(image: image, frameIndex: frameIdx)
+            paintingTitle = paintingCollection.addNewPainting(image: image, frameIndex: frameIdx)
+            showingAlert.toggle()
         }
         .buttonStyle(.bordered)
         .tint(.blue)
@@ -116,7 +120,7 @@ struct ChooseFrameButton: ButtonStyle {
 
 struct ChooseFrameView_Previews: PreviewProvider {
     static var previews: some View {
-        ChooseFrameView(image: UIImage())
+        ChooseFrameView(image: .constant(UIImage()))
             .environmentObject(PaintingCollection())
     }
 }

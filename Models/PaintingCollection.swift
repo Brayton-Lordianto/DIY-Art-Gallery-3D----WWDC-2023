@@ -53,7 +53,7 @@ class PaintingCollection: ObservableObject {
         paintingObjects = paintingObjects + [painting]
         imageFileLoader.saveImage(image: image, imageName: painting.imageName)
         
-        return title
+        return title == "" ? defaultTitle : title
     }
     
     func changePaintingFrame(at index: Int, to frameIndex: Int) {

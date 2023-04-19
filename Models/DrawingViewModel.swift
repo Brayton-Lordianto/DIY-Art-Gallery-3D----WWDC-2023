@@ -38,8 +38,7 @@ class DrawingViewModel: ObservableObject {
     
     //  return the drawing as a UIImage
     func drawingAsImage() -> UIImage {
-        let drawing = drawingModel.canvas.drawing
-        let image = drawing.image(from: drawing.bounds, scale: 1)
+        let image = drawingModel.canvas.drawing.image(from: drawingModel.canvas.drawing.bounds, scale: 1)
         return image
     }
 }

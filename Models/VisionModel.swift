@@ -49,7 +49,10 @@ class VisionModel {
             try requestHandler.perform([request])
         } catch {
             text = nil
+            print("failed to perform vision request on image")
         }
+        
+        print("found the text \(text)")
         
         return text
     }
@@ -65,5 +68,6 @@ class VisionModel {
     
     func setNewImage(image: UIImage) {
         self.image = image
+        print("updated the new image to be \(image)")
     }
 }

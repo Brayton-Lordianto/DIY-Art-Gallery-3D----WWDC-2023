@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PaintingsView: View {
     @ObservedObject private var paintingCollection = PaintingCollection()
-    @StateObject private var drawingViewModel = DrawingViewModel()
     var body: some View {
         NavigationView {
             List {
@@ -56,7 +55,7 @@ struct PaintingsView: View {
     
     private func newPaintingNavLink() -> some View {
         NavigationLink {
-            CanvasView(drawingViewModel: drawingViewModel)
+            CanvasView()
                 .environmentObject(paintingCollection)
         } label: {
             HStack {

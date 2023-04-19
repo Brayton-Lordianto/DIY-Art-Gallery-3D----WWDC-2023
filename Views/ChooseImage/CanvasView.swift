@@ -9,20 +9,29 @@ import SwiftUI
 import PencilKit
 
 struct CanvasView: View {
-    @StateObject var drawingViewModel: DrawingViewModel
+    @StateObject var drawingViewModel = DrawingViewModel()
     @EnvironmentObject var paintingCollection: PaintingCollection
+    @State var uiimage = UIImage() 
     var body: some View {
             VStack {
                 NavigationLink {
-                    ChooseFrameView(image: drawingViewModel.drawingAsImage())
+                    ChooseFrameView(image: $uiimage)
                         .environmentObject(paintingCollection)
+                        .onAppear {
+                            // we are using this rather than passing in the image because it has not yet been set.
+                            uiimage = drawingViewModel.drawingAsImage()
+                        }
                 } label: {
                     Text("Ready to add to My Collection")
                 }
                 .buttonStyle(.bordered)
+                .onTapGesture {
+                    uiimage = drawingViewModel.drawingAsImage()
+                }
                 
                 
-                CanvasRepresentable(drawingViewModel: drawingViewModel)
+                CanvasRepresentable(uiimage: $uiimage)
+                    .environmentObject(drawingViewModel)
                     .offset(y: 10)
                     .ignoresSafeArea(edges: .bottom)
                     .onAppear {
@@ -34,7 +43,8 @@ struct CanvasView: View {
 
 // canvas representable 
 struct CanvasRepresentable: UIViewRepresentable {
-    @ObservedObject var drawingViewModel: DrawingViewModel
+    @EnvironmentObject var drawingViewModel: DrawingViewModel
+    @Binding var uiimage: UIImage
 
     func makeUIView(context: Context) -> PKCanvasView {
         drawingViewModel.drawingModel.canvas.drawingPolicy = .anyInput
@@ -45,11 +55,11 @@ struct CanvasRepresentable: UIViewRepresentable {
     }
 }
 
-
-struct CanvasView_Previews: PreviewProvider {
-    @StateObject var drawingViewModel = DrawingViewModel()
-    static var previews: some View {
-        CanvasRepresentable(drawingViewModel: DrawingViewModel())
-            .environmentObject(PaintingCollection())
-    }
-}
+//
+//struct CanvasView_Previews: PreviewProvider {
+//    @StateObject var drawingViewModel = DrawingViewModel()
+//    static var previews: some View {
+//        CanvasRepresentable(drawingViewModel: DrawingViewModel())
+//            .environmentObject(PaintingCollection())
+//    }
+//}
