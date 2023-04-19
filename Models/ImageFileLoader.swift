@@ -14,11 +14,17 @@ class ImageFileLoader {
         imageName // you can optionally change the name here
     }
     
-    func saveImage(image: UIImage, imageName: String) {
-        let data = image.jpegData(compressionQuality: 1)
+    private func imagePath(imageName: String) -> URL {
         let appFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let imagePath = appFilePath.appendingPathComponent(fileName(imageName: imageName))
+        return imagePath
+    }
+    
+    func saveImage(image: UIImage, imageName: String) {
+        let data = image.jpegData(compressionQuality: 1)
+        let imagePath = imagePath(imageName: imageName)
         
+        print("saved image name is \(imageName)")
         do {
             try data?.write(to: imagePath)
         } catch {
@@ -27,15 +33,16 @@ class ImageFileLoader {
     }
     
     func loadImage(imageName: String) -> UIImage? {
-        let appFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let imagePath = appFilePath.appendingPathComponent(fileName(imageName: imageName))
+        let imagePath = imagePath(imageName: imageName)
         let image = UIImage(contentsOfFile: imagePath.path)
         return image
     }
     
     func loadImageAsTexture(imageName: String) -> TextureResource? {
         do {
-            let imageAsTexture: TextureResource = try .load(named: imageName)
+            print("image name is \(imageName)")
+            let imagePath = imagePath(imageName: imageName)
+            let imageAsTexture: TextureResource = try .load(contentsOf: imagePath)
             return imageAsTexture
         } catch {
             return nil

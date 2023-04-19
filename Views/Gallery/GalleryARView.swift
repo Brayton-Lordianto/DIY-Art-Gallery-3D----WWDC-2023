@@ -49,30 +49,10 @@ extension GalleryARViewRepresentable {
                     print("Unable to load a model due to error \(error)")
                 }
                 cancellable?.cancel()
-                
             }, receiveValue: { [self] (model: Entity) in
                 guard let modelEntity = model as? ModelEntity else { print("unalbe to get \(painting.title) as model entity."); return }
                 render(imageName: painting.imageName, onto: modelEntity)
-                
-//
-//                if let model = model as? ModelEntity {
-//                    self.model = model
-//                    cancellable?.cancel()
-//                    print("Model \(painting.title) is successfully loaded")
-//
-////                    anchor.position = [0.4, 1.5, -1]
-////                    anchor.scale = [300, 300, 300]   // set appropriate scale
-////                    arView.scene.anchors.append(anchor)
-//                }
             })
-
-        
-//        cancellable = ModelEntity.loadAsync(named: paintingFrameModelName).sink { _ in
-//            cancellable?.cancel()
-//        } receiveValue: { entity in
-//            guard let modelEntity = entity as? ModelEntity else { print("unalbe to get \(painting.title) as model entity."); return }
-//            render(imageName: painting.imageName, onto: modelEntity)
-//        }
     }
     
     // render image on top of the entity
@@ -96,7 +76,7 @@ extension GalleryARViewRepresentable {
             return material
         }
 
-        let tintColor: UIColor = .white.withAlphaComponent(1)
+        let tintColor: UIColor = .white.withAlphaComponent(0.999)
         material.color = .init(tint: tintColor,
                                texture: .init(imageAsTexture))
         material.metallic = .float(1.0)
