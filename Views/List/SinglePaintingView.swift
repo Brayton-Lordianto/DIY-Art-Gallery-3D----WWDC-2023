@@ -21,7 +21,7 @@ struct SinglePaintingView: View {
                 .cornerRadius(10)
             
             Button("Save Image") {
-                
+                imageFileLoader.uploadToCameraRoll(imageName: painting.imageName)
             }
             .buttonStyle(.bordered)
             

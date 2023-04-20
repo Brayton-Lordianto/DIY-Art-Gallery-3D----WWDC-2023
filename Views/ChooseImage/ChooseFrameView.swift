@@ -53,6 +53,7 @@ struct ChooseFrameView: View {
             .alert("Name Your Beautiful Artwork", isPresented: $showingAlert, actions: {
                 TextField("Name is being scanned...", text: $paintingTitle)
                 alertSaveButton()
+                Button("Cancel", role: .destructive) {}
             }, message: {
                 VStack {
                     Text("If your artwork contains text, it will show up here.")

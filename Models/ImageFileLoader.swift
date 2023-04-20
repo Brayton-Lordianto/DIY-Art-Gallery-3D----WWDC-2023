@@ -48,4 +48,9 @@ class ImageFileLoader {
             return nil
         }
     }
+    
+    func uploadToCameraRoll(imageName: String) {
+        let uiimage = loadImage(imageName: imageName) ?? UIImage()
+        UIImageWriteToSavedPhotosAlbum(uiimage, nil, nil, nil);
+    }
 }

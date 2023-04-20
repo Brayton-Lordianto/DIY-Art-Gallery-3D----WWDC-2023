@@ -10,7 +10,6 @@ import SwiftUI
 struct PaintingsView: View {
     @ObservedObject private var paintingCollection = PaintingCollection()
     @State private var galleryView: AnyView = AnyView(ProgressView())
-    @State private var view: AnyView = AnyView(ProgressView())
     var body: some View {
         NavigationView {
             List {
@@ -36,10 +35,6 @@ struct PaintingsView: View {
             .listStyle(.sidebar)
             .navigationTitle("Paintings")
         }
-//        .onAppear {
-//            galleryView = GalleryView().environmentObject(paintingCollection)
-//            galleryView?.initializeAR()
-//        }
     }
     
     private func paintingDisplay(painting: PaintingModel) -> some View {
@@ -73,11 +68,9 @@ struct PaintingsView: View {
     
     private func galleryNavLink() -> some View {
         NavigationLink {
-//            AnyView(galleryView)
-//            view
             galleryView
+                .ignoresSafeArea()
                 .onAppear {
-//                    view = AnyView(Text("hey there"))
                     galleryView = AnyView(
                         GalleryARViewRepresentable(paintingCollection: paintingCollection)
                     )

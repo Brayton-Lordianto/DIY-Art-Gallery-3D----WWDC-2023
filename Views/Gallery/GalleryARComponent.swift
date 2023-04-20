@@ -12,7 +12,7 @@ import UIKit
 
 extension GalleryARViewRepresentable {
     // Place Single Model
-    func placeAsynchronously(painting: PaintingModel, at location: SIMD3<Float>) {
+    func placeAsynchronously(painting: PaintingModel, index: Int) {
         var cancellable: Cancellable? = nil
         
         // load the model asynchronously
@@ -26,8 +26,24 @@ extension GalleryARViewRepresentable {
                 cancellable?.cancel()
             }, receiveValue: { [self] (model: Entity) in
                 guard let modelEntity = model as? ModelEntity else { print("unalbe to get \(painting.title) as model entity."); return }
-                render(imageName: painting.imageName, onto: modelEntity)
+                onReceive(imageName: painting.imageName, modelEntity: modelEntity, index: index)
             })
+    }
+    
+    private func onReceive(imageName: String, modelEntity: ModelEntity, index: Int) {
+        // get the model entity and render the image onto it
+        render(imageName: imageName, onto: modelEntity)
+        
+        // add to the positioning of the model entity to space them out
+        reposition(modelEntity: modelEntity, index: index)
+
+        
+        // add the model to the anchor
+        objectsAnchor.addChild(modelEntity)
+    }
+    
+    private func reposition(modelEntity: ModelEntity, index: Int) {
+        modelEntity.position.x += Float(index) * translationUnit
     }
     
     // render image on top of the entity
@@ -39,8 +55,9 @@ extension GalleryARViewRepresentable {
         // the materials of the model is such that the image is on the front of the frame
         modelEntity.model?.materials[0] = material
         
-        // add the model to the anchor
-        objectsAnchor.addChild(modelEntity)
+        // install gestures
+        modelEntity.generateCollisionShapes(recursive: true)
+        arView.installGestures([.all], for: modelEntity)
     }
     
     // returns a material with the image loaded into it
@@ -51,10 +68,9 @@ extension GalleryARViewRepresentable {
             return material
         }
         
-        let tintColor: UIColor = .white
-        material.color = .init(tint: tintColor,
-                               texture: .init(imageAsTexture))
-        material.metallic = .float(1.0)
+//        let tintColor: UIColor = .white
+        material.color = .init(texture: .init(imageAsTexture))
+        material.metallic = .float(0.0)
         material.roughness = .float(0.0)
         
         return material
