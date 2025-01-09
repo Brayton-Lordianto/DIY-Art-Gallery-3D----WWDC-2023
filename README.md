@@ -1,3 +1,5 @@
+![present](img1.png)
+
 # Description
 
 The main flow and idea of the playground app is as follows. Users can draw their own paintings on a built-in canvas and can then save that drawing (currently temporarily for simplicity) to an associated 3D frame. After deciding on a 3D frame, they will choose the title of the painting, which can be automatically detected if any text is in the drawing. They can add as many paintings as they want. They can view their painting images in simplistic form through a list of paintings, or can view them as a sort of Do-It-Yourself 3D art gallery. In this 3D art gallery, they will see their images pasted onto the frame, and they can move the paintings to a desired position, and relish at the magic of seeing their drawings take on a 3D form wherever they are.
@@ -20,3 +22,7 @@ One of them (titled "rectangular-frame.usdz") originated from "Fred Drabble"'s "
 
 The other (titled "circular-frame.usdz" in the app) originated from "mfb64"'s "John William Godward . Violets, Sweet Violet", which is publicly available in https://sketchfab.com/3d-models/john-william-godward-violets-sweet-violet-852a6e9f9eb64054b2d66f1e385194ae.
 
+# Prizes 
+
+What I got for winning this included a one year subscription to Apple's Paid Developer account, AirPods, an exclusive hoodie, and pins. 
+![prizes](img2.png)
