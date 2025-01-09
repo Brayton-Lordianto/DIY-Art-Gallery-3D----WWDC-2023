@@ -1,4 +1,4 @@
-![present](img1.png)
+![present](/img1.jpg)
 
 # Description
 
@@ -25,4 +25,4 @@ The other (titled "circular-frame.usdz" in the app) originated from "mfb64"'s "J
 # Prizes 
 
 What I got for winning this included a one year subscription to Apple's Paid Developer account, AirPods, an exclusive hoodie, and pins. 
-![prizes](img2.png)
+![prizes](img2.jpg)
